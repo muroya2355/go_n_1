@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS book;
+
+DROP TABLE IF EXISTS luser;
+
+CREATE TABLE book (
+    id      SERIAL PRIMARY KEY,
+    title   VARCHAR(20) NOT NULL,
+    user_id INTEGER NOT NULL
+);
+
+CREATE TABLE luser (
+    id      SERIAL PRIMARY KEY,
+    uname   VARCHAR(20) NOT NULL,
+    age     INTEGER NOT NULL
+);
