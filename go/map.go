@@ -6,6 +6,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 
 	// postgres ドライバ
 	_ "github.com/lib/pq"
@@ -27,6 +28,14 @@ type Luser struct {
 	Age   int
 }
 
+func min(a, b int) int {
+	if a < b {
+		return a
+	} else {
+		return b
+	}
+}
+
 // メイン関数
 func main() {
 
@@ -43,6 +52,9 @@ func main() {
 	var userIDs []string
 	// 利用者ID -> 利用者情報へのマップ
 	userMap := make(map[int]Luser)
+
+	// 時間計測開始
+	start := time.Now()
 
 	// 書籍一覧の取得、格納
 	rows, _ := Db.Query("SELECT * FROM book")
@@ -72,8 +84,17 @@ func main() {
 		// map から利用者データの取得
 		book.Uname = userMap[book.UserID].Uname
 		book.Age = userMap[book.UserID].Age
-		// 結果の表示
+	}
+
+	// 時間計測終了
+	end := time.Now()
+
+	// 結果の表示
+	for i := 0; i < min(9, len(books)); i++ {
+		book := books[i]
 		fmt.Println(book.ID, book.Title, book.Uname, book.Age)
 	}
+
+	fmt.Printf("処理時間: %f秒\n", (end.Sub(start)).Seconds())
 
 }
